@@ -1,0 +1,28 @@
+/* |--------------------------------------------------------------------------
+| Primary Color Palette Definitions
+|--------------------------------------------------------------------------
+| 
+| These variables define the core colors used throughout the website 
+| for easy, centralized maintenance.
+|
+*/
+
+:root {
+    /* Primary Dark Blue/Purple - Used for headers, footers, and main background elements */
+    --color-primary-dark: #313b6d;
+
+    /* Secondary Light Blue - Used for accents, buttons, links, and hover states */
+    --color-secondary-light: #5a84e3;
+    
+    /* Hover/Darker Accent */
+    --color-secondary-dark: #476abf;
+
+    /* Text Colors */
+    --color-heading-dark: #1f2746;
+    --color-text-body: #666666;
+    --color-text-light: #ffffff;
+
+    /* Backgrounds and Borders */
+    --color-background-light: #f5f6f7;
+    --color-border: #e0e0e0;
+}
