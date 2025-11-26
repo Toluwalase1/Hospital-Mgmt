@@ -1,0 +1,28 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Inter', sans-serif;
+}
+
+
+body { background: #f3f6ff; }
+
+
+.container { width: 90%; margin: auto; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+
+
+
+/* Services */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 4rem 0; }
+.service-card { background: #fff; border-radius: 10px; padding: 1.5rem; }
+.img-box { background: #ccc; height: 180px; border-radius: 10px; margin-bottom: 1rem; }
+.learn { color: #1d61d6; text-decoration: none; font-weight: 600; }
+.learn:hover{color: #1F2B6C;}
+
+
+
+
+
