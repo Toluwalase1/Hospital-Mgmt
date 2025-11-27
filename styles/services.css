@@ -271,7 +271,7 @@ nav {
         | Hero Section (Page Title)
         | --------------------------------------------------------------------------*/
 .hero {
-  background-image: url("/public//doctor-patient-bg.jpg");
+  background-image: url("public/doctor-patient-bg.jpg");
   background-size: cover;
   background-position: center;
   color: var(--color-text-light);
