@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medcare - Book an Appointment</title>
+    <!-- Use Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* |--------------------------------------------------------------------------
+        | Primary Color Palette Definitions (Provided by User)
+        |--------------------------------------------------------------------------*/
+
+        :root {
+            /* Primary Dark Blue/Purple - Used for headers, footers, and main background elements */
+            --color-primary-dark: #313b6d;
+
+            /* Secondary Light Blue - Used for accents, buttons, links, and hover states */
+            --color-secondary-light: #5a84e3;
+            
+            /* Hover/Darker Accent */
+            --color-secondary-dark: #476abf;
+
+            /* Text Colors */
+            --color-heading-dark: #1f2746;
+            --color-text-body: #666666;
+            --color-text-light: #ffffff;
+
+            /* Backgrounds and Borders */
+            --color-background-light: #f5f6f7;
+            --color-border: #e0e0e0;
+        }
+
+        /* Base Styles and Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-background-light);
+            color: var(--color-text-body);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-primary-dark);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-secondary-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+          
+        }
+
+        /* Utility Classes */
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--color-secondary-light);
+            color: var(--color-text-light);
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-secondary-dark);
+            color: var(--color-text-light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--color-heading-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--color-text-body);
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Top Bar & Navigation (Reused) */
+        .top-bar {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+            font-size: 0.8rem;
+            padding: 0.5rem 0;
+            display: none; 
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .top-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar {
+            padding: 1rem 0;
+            background-color: var(--color-text-light);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary-dark);
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links li a {
+            color: var(--color-heading-dark);
+            font-weight: 600;
+            padding: 0.25rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s, color 0.3s;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: var(--color-secondary-light);
+            border-bottom-color: var(--color-secondary-light);
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .search-icon, .menu-icon {
+            font-size: 1.25rem;
+            color: var(--color-primary-dark);
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            display: block;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background-image: url('/public/doctor-patient-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--color-text-light);
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(49, 59, 109, 0.7);
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        .breadcrumb span {
+            color: var(--color-text-light);
+            font-weight: 600;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-top: 0.5rem;
+            color: var(--color-text-light);
+        }
+        
+        /* Appointment Section */
+        .appointment-section {
+            padding: 6rem 0;
+        }
+        
+        .appointment-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .appointment-info h2 {
+            font-size: 2rem;
+            color: var(--color-heading-dark);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .appointment-info p {
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            color: var(--color-text-body);
+        }
+
+        /* Appointment Form Styling */
+        .appointment-form {
+            background-color: var(--color-primary-dark);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        
+        /* Input Field Styling (Combined Select and Input) */
+        .appointment-form input,
+        .appointment-form select,
+        .appointment-form textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--color-text-light);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+            appearance: none; /* Hide default select arrow */
+            -webkit-appearance: none;
+        }
+
+        /* Custom Select Arrow Styling */
+        .select-wrapper {
+            position: relative;
+        }
+        .select-wrapper::after {
+            content: "\f078"; /* Font Awesome down arrow */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+        }
+        
+        .appointment-form select option {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+        }
+        
+        .appointment-form input::placeholder,
+        .appointment-form select,
+        .appointment-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .appointment-form textarea {
+            min-height: 100px;
+        }
+
+        .appointment-form .btn-primary {
+            width: 100%;
+            padding: 1rem;
+        }
+
+        /* Schedule Hours Card */
+        .schedule-card {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .schedule-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-light);
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+        
+        .schedule-item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 1rem;
+        }
+
+        .schedule-item .day {
+            font-weight: 600;
+        }
+
+        .schedule-emergency {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .schedule-emergency i {
+            color: var(--color-secondary-light);
+            font-size: 1.25rem;
+            margin-right: 0.5rem;
+        }
+        
+        /* Map Section (Reused) */
+        .map-section {
+            padding: 4rem 0;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background-color: var(--color-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-text-body);
+            font-weight: 600;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Contact Info Boxes (Reused) */
+        .contact-info-section {
+            padding: 0 0 6rem;
+        }
+        
+        .contact-info-section .section-title {
+            margin-bottom: 2rem;
+        }
+
+        .info-boxes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .info-box {
+            background-color: var(--color-text-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box.dark {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+        }
+        .info-box.light {
+            background-color: var(--color-secondary-light);
+            color: var(--color-text-light);
+        }
+
+        .info-box i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-secondary-light);
+        }
+        
+        .info-box.dark i {
+            color: var(--color-text-light);
+        }
+
+        .info-box h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: inherit;
+        }
+
+        .info-box p {
+            font-size: 0.9rem;
+            color: inherit;
+            margin: 0;
+        }
+
+        /* Footer (Reused) */
+        .footer {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-text-light);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .footer h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-text-light);
+        }
+
+        .footer ul {
+            list-style: none;
+        }
+
+        .footer ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.25rem 0;
+        }
+
+        .footer-contact p, .footer-contact a {
+             color: rgba(255, 255, 255, 0.7);
+             font-size: 0.9rem;
+             display: block;
+             margin-bottom: 0.5rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .newsletter-form input {
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--color-text-light);
+        }
+        
+        .newsletter-form button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background: none;
+            border: none;
+            color: var(--color-secondary-light);
+            padding: 0 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .social-icons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--color-secondary-light);
+        }
+
+        /* --- RESPONSIVENESS (Media Queries) --- */
+
+        @media (min-width: 768px) {
+            .top-bar { display: block; }
+            .menu-icon { display: none; }
+            .nav-links { display: flex; }
+            .page-header { padding: 7rem 0; }
+
+            .appointment-grid {
+                grid-template-columns: 3fr 2fr; /* Form and Schedule side-by-side */
+            }
+            
+            .info-boxes-grid {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 2fr 3fr;
+                text-align: left;
+            }
+            
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            .social-icons {
+                margin-top: 0;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .info-boxes-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 info boxes in a row */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-item">
+                <i class="fas fa-headset"></i>
+                <span>EMERGENCY</span>
+                <a href="tel:(237) 681-812-255" class="top-bar-link" style="color: var(--color-secondary-light);">(237) 681-812-255</a>
+            </div>
+            <div class="top-bar-item">
+                <i class="far fa-clock"></i>
+                <span>WORK HOUR</span>
+                <span class="top-bar-text">09:00 - 20:00 Everyday</span>
+            </div>
+            <div class="top-bar-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>LOCATION</span>
+                <span class="top-bar-text">Loca Some Place</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="index.html" class="logo">MEDCARE</a>
+            
+            <!-- Navigation Links -->
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="#">Doctors</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="contacts.html">Contact</a></li>
+            </ul>
+
+            <!-- Actions -->
+            <div class="nav-actions">
+                <i class="fas fa-search search-icon"></i>
+                <a href="appointments.html" class="btn-primary active">Appointment</a>
+                <i class="fas fa-bars menu-icon"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header (Book an Appointment) -->
+    <section class="page-header">
+        <div class="container">
+            <p class="breadcrumb">
+                <a href="#">Home</a> / <span>Appointment</span>
+            </p>
+            <h1>Book an Appointment</h1>
+        </div>
+    </section>
+
+    <!-- Appointment Form and Schedule Section -->
+    <section class="appointment-section">
+        <div class="container">
+            <div class="appointment-grid">
+                <!-- Left Column: Form -->
+                <div class="appointment-info">
+                    <h2>Book an Appointment</h2>
+                    <p>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
+                        dicta sunt explicabo. Cursus faucibus vitae.
+                    </p>
+                    <form class="appointment-form">
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                            <!-- Top Row (3 columns on desktop, 1 on mobile) -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <input type="text" placeholder="Name" aria-label="Name" required>
+                                <div class="select-wrapper">
+                                    <select aria-label="Gender" required>
+                                        <option value="">Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <input type="email" placeholder="Email" aria-label="Email" required>
+                            </div>
+
+                            <!-- Middle Row (3 columns on desktop, 1 on mobile) -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <input type="text" placeholder="Phone" aria-label="Phone Number" required>
+                                <div class="select-wrapper">
+                                    <select aria-label="Time" required>
+                                        <option value="">Time</option>
+                                        <option value="9am">09:00 AM</option>
+                                        <option value="10am">10:00 AM</option>
+                                        <option value="11am">11:00 AM</option>
+                                    </select>
+                                </div>
+                                <input type="date" placeholder="Date" aria-label="Appointment Date" required>
+                            </div>
+
+                            <!-- Bottom Row (2 columns on desktop, 1 on mobile) -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <div class="select-wrapper">
+                                    <select aria-label="Doctor" required>
+                                        <option value="">Doctor</option>
+                                        <option value="dr-smith">Dr. Smith</option>
+                                        <option value="dr-jones">Dr. Jones</option>
+                                    </select>
+                                </div>
+                                <div class="select-wrapper">
+                                    <select aria-label="Department" required>
+                                        <option value="">Department</option>
+                                        <option value="cardio">Cardiology</option>
+                                        <option value="dental">Dental</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Message Field and Submit Button -->
+                        <textarea placeholder="Message (Optional)" aria-label="Message"></textarea>
+                        <button type="submit" class="btn-primary">Submit</button>
+                    </form>
+                </div>
+
+                <!-- Right Column: Schedule Hours -->
+                <div class="schedule-card">
+                    <h2>Schedule hours</h2>
+                    <div class="schedule-item">
+                        <span class="day">Monday</span>
+                        <span class="time">09:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Tuesday</span>
+                        <span class="time">09:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Wednesday</span>
+                        <span class="time">09:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Thursday</span>
+                        <span class="time">09:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Friday</span>
+                        <span class="time">09:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Saturday</span>
+                        <span class="time">09:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Sunday</span>
+                        <span class="time">Closed</span>
+                    </div>
+
+                    <div class="schedule-emergency">
+                        <p style="font-size: 1.1rem; color: var(--color-secondary-light);">
+                            <i class="fas fa-phone-alt"></i> Emergency
+                        </p>
+                        <p style="font-size: 1.5rem; font-weight: 800;">(237) 681-812-255</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+              
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63375.65782250307!2d3.6703674470527883!3d6.893161235014783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bd830183e5ca7%3A0x8c8fd2fee0967e27!2sIlishan-Remo%20121103%2C%20Ogun%20State!5e0!3m2!1sen!2sng!4v1764221770934!5m2!1sen!2sng" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+
+    <!-- Contact Info Boxes -->
+    <section class="contact-info-section">
+        <div class="container">
+            <h2 class="section-title">GET IN TOUCH</h2>
+            <p class="section-subtitle" style="margin-bottom: 2rem;">Contact</p>
+
+            <div class="info-boxes-grid">
+                <div class="info-box light">
+                    <i class="fas fa-phone-alt"></i>
+                    <h4>EMERGENCY</h4>
+                    <p>(237) 681-812-255</p>
+                    <p>(237) 666-221-994</p>
+                </div>
+                <div class="info-box dark">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h4>LOCATION</h4>
+                    <p>Loca Some Place</p>
+                    <p>2070 Some Country</p>
+                </div>
+                <div class="info-box light">
+                    <i class="far fa-envelope"></i>
+                    <h4>EMAIL</h4>
+                    <p>fbdlnxxxxxxxx@gmail.com</p>
+                    <p>myposts@posts.com.at</p>
+                </div>
+                <div class="info-box dark">
+                    <i class="far fa-clock"></i>
+                    <h4>WORKING HOURS</h4>
+                    <p>Mon-Sat 09:00-20:00</p>
+                    <p>Sunday Emergency Only</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- 1. Logo and Mission -->
+                <div>
+                    <a href="#" class="footer-logo">MEDCARE</a>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Leading the Way in Medical Excellence, Trusted Care.
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                        Excellence. Trusted. Care.
+                    </p>
+                </div>
+
+                <!-- 2. Important Links -->
+                <div>
+                    <h4>Important Links</h4>
+                    <ul>
+                        <li><a href="#">Appointment</a></li>
+                        <li><a href="#">Doctors</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">About Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Contact Us -->
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-phone-alt" style="color: var(--color-secondary-light);"></i> Call: (237) 681-812-255</p>
+                    <p><i class="far fa-envelope" style="color: var(--color-secondary-light);"></i> Email: <a href="mailto:fbdlnxxxxxxxx@gmail.com">fbdlnxxxxxxxx@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt" style="color: var(--color-secondary-light);"></i> Loca Some place</p>
+                    <p>Some country</p>
+                </div>
+
+                <!-- 4. Newsletter -->
+                <div>
+                    <h4>Newsletter</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                        Enter your email address to subscribe.
+                    </p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email address" aria-label="Email for Newsletter">
+                        <button type="submit" aria-label="Subscribe">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Hospital's name All Rights Reserved by PNTEC-LTD</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

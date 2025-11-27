@@ -1,58 +1,642 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MedCare — About Us</title>
-   <!-- Link to Font Awesome CDN for Icons -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCare — About Us</title>
+    <!-- Link to Font Awesome CDN for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Link to Custom CSS files -->
-    <link rel="stylesheet" href="/styles/colors.css">
-    <link rel="stylesheet" href="/styles/style.css">
-     <link rel="stylesheet" href="styles/about.css">
     <!-- Using Inter font for a modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* |--------------------------------------------------------------------------
+        | Primary Color Palette Definitions (Provided by User)
+        |--------------------------------------------------------------------------*/
+
+        :root {
+            /* Primary Dark Blue/Purple - Used for headers, footers, and main background elements */
+            --color-primary-dark: #313b6d;
+
+            /* Secondary Light Blue - Used for accents, buttons, links, and hover states */
+            --color-secondary-light: #5a84e3;
+            
+            /* Hover/Darker Accent */
+            --color-secondary-dark: #476abf;
+
+            /* Text Colors */
+            --color-heading-dark: #1f2746;
+            --color-text-body: #666666;
+            --color-text-light: #ffffff;
+
+            /* Backgrounds and Borders */
+            --color-background-light: #f5f6f7;
+            --color-border: #e0e0e0;
+        }
+
+        /* Base Styles and Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--color-background-light);
+            color: var(--color-text-body);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-primary-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* --- Utility Buttons --- */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--color-secondary-light);
+            color: var(--color-text-light);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-secondary-dark);
+        }
+
+        .btn-outline {
+            background: none;
+            color: var(--color-primary-dark);
+            border: 1px solid var(--color-primary-dark);
+        }
+
+        .btn-outline:hover {
+            color: var(--color-secondary-light);
+            border-color: var(--color-secondary-light);
+        }
+
+        /* --------------------------------------------------------------------------
+        | Top Info Bar (The dark bar above the main navigation, as seen in original images)
+        | --------------------------------------------------------------------------*/
+
+        .top-info-bar {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+            font-size: 0.8rem;
+            padding: 0.5rem 0;
+            display: none; /* Hidden on mobile by default */
+        }
+
+        .top-info-bar .container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .top-info-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .top-info-bar-item i {
+            color: var(--color-secondary-light); /* Accent color for icons */
+        }
+        
+        /* Show on tablet/desktop */
+        @media (min-width: 768px) {
+            .top-info-bar {
+                display: block;
+            }
+        }
+
+
+        /* --------------------------------------------------------------------------
+        | Main Navigation
+        | --------------------------------------------------------------------------*/
+
+        header {
+            background-color: var(--color-text-light);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 1rem 0;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary-dark);
+            white-space: nowrap;
+        }
+        
+        /* Using span for color-split logo effect */
+        .top-bar .logo span {
+            color: var(--color-secondary-light);
+        }
+
+        nav {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: none; /* Hidden by default for mobile */
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nav-menu li a {
+            color: var(--color-heading-dark);
+            font-weight: 600;
+            padding: 0.25rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: var(--color-secondary-light);
+            border-bottom-color: var(--color-secondary-light);
+        }
+
+        .nav-right {
+            display: flex; /* Always visible to hold appointment button/toggle */
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-right .btn-outline {
+            display: none; /* Hide outline button on mobile */
+        }
+        
+        .nav-right .btn-primary {
+            padding: 10px 15px; /* Slightly smaller button for better mobile fit */
+        }
+
+        .menu-toggle {
+            font-size: 1.5rem;
+            color: var(--color-primary-dark);
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        /* Tablet and Desktop Navigation */
+        @media (min-width: 992px) {
+            .nav-menu {
+                display: flex;
+            }
+            .nav-right .btn-outline {
+                display: inline-block;
+            }
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+        | Hero Section (Page Title)
+        | --------------------------------------------------------------------------*/
+        .hero {
+            background-image: url('/public/contact-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--color-text-light);
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(49, 59, 109, 0.75); /* Dark overlay */
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-top: 10px;
+        }
+
+        .hero .nav {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .hero .nav a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero .nav li:last-child {
+            color: var(--color-text-light);
+            font-weight: 600;
+        }
+
+        /* --------------------------------------------------------------------------
+        | Welcome Section
+        | --------------------------------------------------------------------------*/
+
+        .welcome {
+            padding: 6rem 0;
+        }
+
+        .welcome .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .welcome-img {
+            min-height: 350px;
+            background-image: url('/public/Our\ Team1.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .welcome-text h2.well {
+            color: var(--color-secondary-light);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text h2.come {
+            color: var(--color-heading-dark);
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-text ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+        }
+
+        .welcome-text ul li {
+            padding: 8px 0;
+            font-size: 1rem;
+            color: var(--color-text-body);
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .welcome-text ul li::before {
+            content: "\f058"; /* Checkmark icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--color-secondary-light);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Tablet and Desktop Welcome Layout */
+        @media (min-width: 992px) {
+            .welcome .container {
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+        | Testimonial Section (Static)
+        | --------------------------------------------------------------------------*/
+
+        .testimonial {
+            background-color: var(--color-primary-dark);
+            padding: 4rem 0;
+            text-align: center;
+            color: var(--color-text-light);
+        }
+
+        .testimonial blockquote {
+            font-size: 1.5rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 1rem;
+            line-height: 1.5;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .testimonial blockquote::before {
+            content: "\f10d"; /* Left quote icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 50%;
+            top: -30px;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial .author {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-secondary-light);
+            margin-bottom: 1rem;
+        }
+        
+        /* --------------------------------------------------------------------------
+        | Contact Info Section (Simplified Grid)
+        | --------------------------------------------------------------------------*/
+
+        .contact {
+            padding: 6rem 0;
+            background-color: var(--color-background-light);
+        }
+
+        .contact .section-label {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-secondary-light);
+            text-align: center;
+        }
+
+        .contact .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--color-heading-dark);
+            text-align: center;
+        }
+
+        .contact .container.grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            background-color: var(--color-text-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .contact-card i {
+            font-size: 2rem;
+            color: var(--color-secondary-light);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-card strong {
+            font-size: 1.1rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-card div {
+            line-height: 1.4;
+            color: var(--color-text-body);
+            font-size: 0.95rem;
+        }
+        
+        /* Consistent card styling to match the light card look in original images */
+        .contact-card:nth-child(even) {
+            background-color: var(--color-text-light);
+            color: var(--color-text-body);
+        }
+        .contact-card:nth-child(even) i {
+            color: var(--color-secondary-light);
+        }
+        .contact-card:nth-child(even) strong {
+            color: var(--color-primary-dark);
+        }
+        .contact-card:nth-child(even) div {
+            color: var(--color-text-body);
+        }
+
+
+        /* --------------------------------------------------------------------------
+        | Footer
+        | --------------------------------------------------------------------------*/
+
+        footer {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-text-light);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-text-light);
+        }
+
+        .footer-col p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.25rem 0;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--color-secondary-light);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1rem;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .newsletter-form input {
+            padding: 0.75rem 1rem;
+            border: none;
+            width: 100%;
+            background: transparent;
+            color: var(--color-text-light);
+        }
+        
+        .newsletter-form input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .newsletter-form button {
+            background: var(--color-secondary-light);
+            border: none;
+            color: var(--color-text-light);
+            padding: 0 1rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        
+        .newsletter-form button:hover {
+            background: var(--color-secondary-dark);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+        
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links a:hover {
+            color: var(--color-secondary-light);
+            border-color: var(--color-secondary-light);
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+                text-align: left;
+            }
+            .social-links {
+                margin-top: 0;
+            }
+        }
+        
+        /* Simple Mobile Nav Toggle JS functionality (CSS only alternative not used for full interactivity) */
+        .mobile-menu-open .nav-menu {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 65px; /* Adjust based on header height */
+            right: 1rem;
+            background-color: var(--color-text-light);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            padding: 1rem;
+            z-index: 100;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .mobile-menu-open .nav-menu li a {
+            padding: 0.5rem 0;
+            display: block;
+        }
+        
+    </style>
 </head>
 <body>
-       <div class="top-header-bar">
-        <div class="container top-info-grid">
-            <a href="index.html" class="logo" style="color: var(--color-primary-dark); font-size: 1.5rem;">MED<span style="color: var(--color-secondary-light);">CARE</span></a>
-            
-            <div class="top-info-item">
-                <i class="fas fa-phone-alt"></i>
-                <div>
-                    <p style="font-size: 0.8rem; color: var(--color-text-body);">EMERGENCY</p>
-                    <span>08143086623</span>
-                </div>
+    
+    <!-- Top Info Bar (Dark Blue) -->
+    <div class="top-info-bar">
+        <div class="container">
+            <div class="top-info-bar-item">
+                <i class="fas fa-headset"></i>
+                <span>EMERGENCY: 08143086623</span>
             </div>
-            
-            <div class="top-info-item">
-                <i class="fas fa-clock"></i>
-                <div>
-                    <p style="font-size: 0.8rem; color: var(--color-text-body);">WORK HOUR</p>
-                    <span>09:00 - 20:00 Everyday</span>
-                </div>
+            <div class="top-info-bar-item">
+                <i class="far fa-clock"></i>
+                <span>WORK HOUR: 09:00 - 20:00 Everyday</span>
             </div>
-            
-            <div class="top-info-item">
+            <div class="top-info-bar-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <div>
-                    <p style="font-size: 0.8rem; color: var(--color-text-body);">LOCATION</p>
-                    <span>Babcock University</span>
-                </div>
+                <span>LOCATION: Babcock University</span>
             </div>
         </div>
     </div>
+    
     <!-- Header & Navigation -->
     <header>
         <div class="container">
             <div class="top-bar">
-                <a href="index.html" class="logo">MEDCARE</a>
+                <a href="index.html" class="logo">MED<span style="color: var(--color-secondary-light);">CARE</span></a>
                 
                 <nav>
                     <ul class="nav-menu" id="navMenu">
-                        <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html" class="active">About Us</a></li>
                         <li><a href="services.html">Services</a></li>
                         <li><a href="doctors.html">Doctors</a></li>
                         <li><a href="#">Blog</a></li>
@@ -62,91 +646,103 @@
                 
                 <div class="nav-right">
                     <button class="btn btn-outline">Call Us: 08143086623</button>
-                    <button class="btn btn-primary">Book Appointment</button>
-                </div>
+                    <a href="appointments.html">
+                      <button class="btn btn-primary">Book Appointment</button>
+                    </a>
 
-                <div class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
+                    <!-- Hamburger menu -->
+                    <div class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- HERO (Page Header) -->
+    <section class="hero">
+        <div class="container">
+            <ul class="nav">
+                <li><a href="index.html">Home</a></li>
+                <li>/</li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <h1>About us</h1>
+        </div>
+    </section>
 
- 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <ul class="nav">
-        <li><a href="index.html">Home</a></li>
-        <li>/</li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-      <h1>About us</h1>
-    </div>
-  </section>
+    <!-- WELCOME -->
+    <section class="welcome">
+        <div class="container">
+            <div class="welcome-img" role="img" aria-label="hospital-staff"></div>
+            <div class="welcome-text">
+                <h2 class="well">WELCOME TO MEDCARE</h2>
+                <h2 class="come">Best Care for Your<br/>Good Health</h2>
+                
+                <p>
+                    At MEDCARE, we are committed to providing medical excellence through compassionate and trusted care. 
+                    Our mission is to ensure every patient receives high-quality attention and achieves optimal health outcomes.
+                </p>
+                
+                <ul>
+                    <li>Quality medical services</li>
+                    <li>Experienced doctors</li>
+                    <li>Modern diagnostic equipment</li>
+                    <li>Trusted and compassionate care</li>
+                    <li>A passion for healing</li>
+                    <li>A legacy of excellence</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-  <!-- WELCOME -->
-  <section class="welcome">
-    <div class="container">
-      <div class="welcome-img" role="img" aria-label="hospital-staff"></div>
-      <div class="welcome-text">
-        <h2 class="well">WELCOME TO MEDCARE</h2>
-        <h2 class="come">Best Care for Your<br/>Good Health</h2>
-        <ul>
-          <li>Quality medical services</li>
-          <li>Experienced doctors</li>
-          <li>Modern diagnostic equipment</li>
-          <li>Trusted and compassionate care</li>
-          <li>A passion for healing</li>
-          <li>A legacy of excellence</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    <!-- TESTIMONIAL (Static Content) -->
+    <section class="testimonial">
+        <div class="container">
+            <blockquote>“The team at MEDCARE provided excellent service and demonstrated true professionalism. I felt completely at ease and well cared for during my visit. Highly recommended for trusted and compassionate care.”</blockquote>
+            <div class="author">— Jane Smith, Satisfied Patient</div>
+        </div>
+    </section>
 
-  <!-- TESTIMONIAL -->
-  <section class="testimonial">
-    <div class="container">
-      <blockquote id="testimonial-text">“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat scelerisque tortor ornare.”</blockquote>
-      <div class="author" id="testimonial-author">— John Doe</div>
-      <div class="dot-pagination" id="testimonial-dots"></div>
-    </div>
-  </section>
+    <!-- CONTACT INFO -->
+    <section class="contact">
+        <div class="container">
+            <p class="section-label">GET IN TOUCH</p>
+            <h4 class="section-title">CONTACT</h4>
+        </div>
+        
+        <div class="container grid-container">
+            <!-- Card 1: Emergency -->
+            <div class="contact-card">
+                <i class="fa-solid fa-phone-volume"></i>
+                <strong>EMERGENCY</strong>
+                <div>(237) 681-812-255</div>
+            </div>
+            
+            <!-- Card 2: Location -->
+            <div class="contact-card">
+                <i class="fa-solid fa-location-dot"></i>
+                <strong>LOCATION</strong>
+                <div>Nigeria <br/>Ilishan Remo</div>
+            </div>
+            
+            <!-- Card 3: Email -->
+            <div class="contact-card">
+                <i class="fa-solid fa-envelope"></i>
+                <strong>EMAIL</strong>
+                <div>info@medcare.com</div>
+            </div>
+            
+            <!-- Card 4: Working Hours -->
+            <div class="contact-card">
+                <i class="fa-solid fa-clock"></i>
+                <strong>WORKING HOURS</strong>
+                <div>Mon-Sat: 09:00–20:00<br/>Sunday: Emergency only</div>
+            </div>
+        </div>
+    </section>
 
-  <!-- DOCTORS -->
-  <section class="doctors">
-    <div class="container">
-      <h2>Trusted Care — Our Doctors</h2>
-      <div class="doctor-grid" id="doctorGrid">
-        <!-- cards will be generated by JS -->
-      </div>
-      <div class="dot-pagination" id="doctor-dots"></div>
-    </div>
-  </section>
-
-  <!-- NEWS -->
-  <section class="news">
-    <div class="container">
-      <h2 style="text-align:center;color:#BFD2F8;letter-spacing:2px">Better Information, Better Health </h2>
-      <h4 style="text-align: center; color:#203165">NEWS</h4>
-      <div class="news-grid" id="newsGrid"></div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact">
-    <div class="container">
-            <h2 style="text-align:center;color:#BFD2F8;letter-spacing:2px">GET IN TOUCH</h2>
-      <h4 style="text-align: center; color:#203165">CONTACT</h4>
-      <div class="contact-card"><i class="fa-solid fa-phone-volume"></i><strong>EMERGENCY</strong><div>(237) 681-812-255</div></div>
-      <div class="contact-card"><i class="fa-solid fa-location-dot"></i><strong>LOCATION</strong><div>0123 Some place<br/>Some country</div></div>
-      <div class="contact-card"><i class="fa-solid fa-envelope"></i><strong>EMAIL</strong><div>filedineseoe@gmail.com</div></div>
-      <div class="contact-card"><i class="fa-solid fa-clock"></i><strong>WORKING HOURS</strong><div>Mon-Sat: 09:00–20:00<br/>Sunday: Emergency only</div></div>
-    </div>
-  </section>
-
-   <!-- Footer -->
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-grid">
@@ -183,6 +779,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
+                <p>&copy; 2025 MedCare. All rights reserved.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -192,141 +789,19 @@
             </div>
         </div>
     </footer>
-
-  <script>
-    /*********************
-     * Simple data models
-     *********************/
-    const doctors = [
-      { name: 'Dr. Emmanuel K.', spec: 'NEUROLOGY', img: '/mnt/data/About us.png' },
-      { name: 'Dr. Aisha B.', spec: 'PEDIATRICS', img: '/mnt/data/About us.png' },
-      { name: 'Dr. Samuel R.', spec: 'CARDIOLOGY', img: '/mnt/data/About us.png' }
-    ];
-
-    const testimonials = [
-      { text: 'Excellent service and very professional staff. I felt at home.', author: '— John Doe' },
-      { text: 'The doctors took time to explain everything and were very kind.', author: '— Jane Smith' },
-      { text: 'Modern equipment and clean facility. Highly recommend.', author: '— Mark Lee' }
-    ];
-
-    const news = Array.from({length:4}).map((_,i)=>({
-      title: "This Article's Title goes Here, but not too long.",
-      date: 'Monday 05, September 2021',
-      author: 'By Author',
-      views: 68,
-      likes: 86,
-      img: '/mnt/data/About us.png'
-    }))
-
-
-    /*********************
-     * Render Doctors
-     *********************/
-    const doctorGrid = document.getElementById('doctorGrid');
-    const doctorDots = document.getElementById('doctor-dots');
-
-    function renderDoctors(){
-      doctorGrid.innerHTML = '';
-      doctors.forEach((d, idx) => {
-        const card = document.createElement('div');
-        card.className = 'doctor-card';
-        card.innerHTML = `
-          <div class="doctor-photo" style="background-image:url('${d.img}')" role="img" aria-label="doctor photo ${idx+1}"></div>
-          <div class="doctor-body">
-            <div class="doc-name">${d.name}</div>
-            <div class="doc-spec">${d.spec}</div>
-            <div class="doc-actions"><button onclick="alert('Viewing profile for ${d.name}')">View Profile</button></div>
-          </div>
-        `;
-        doctorGrid.appendChild(card);
-      });
-      // dots
-      doctorDots.innerHTML = '';
-      doctors.forEach((_,i)=>{
-        const dot = document.createElement('div'); dot.className='dot'; if(i===0)dot.classList.add('active'); doctorDots.appendChild(dot);
-      })
-    }
-
-    /*********************
-     * Render News
-     *********************/
-    const newsGrid = document.getElementById('newsGrid');
-    function renderNews(){
-      newsGrid.innerHTML = '';
-      news.forEach(n=>{
-        const card = document.createElement('article');
-        card.className = 'news-card';
-        card.innerHTML = `
-          <div class="news-thumb" style="background-image:url('${n.img}')"></div>
-          <div class="news-body">
-            <div class="meta">${n.date} | ${n.author}</div>
-            <h4>${n.title}</h4>
-            <div class="meta">❤ ${n.likes} • 👁 ${n.views}</div>
-          </div>
-        `;
-        newsGrid.appendChild(card);
-      })
-    }
-
-    /*********************
-     * Testimonial slider
-     *********************/
-    const testimonialText = document.getElementById('testimonial-text');
-    const testimonialAuthor = document.getElementById('testimonial-author');
-    const testimonialDots = document.getElementById('testimonial-dots');
-    let tIndex = 0;
-
-    function renderTestimonialDots(){
-      testimonialDots.innerHTML = '';
-      testimonials.forEach((_,i)=>{
-        const dot = document.createElement('div'); dot.className='dot'; if(i===0)dot.classList.add('active'); dot.addEventListener('click',()=>{tIndex=i;showTestimonial()});
-        testimonialDots.appendChild(dot);
-      })
-    }
-    function showTestimonial(){
-      const t = testimonials[tIndex];
-      testimonialText.textContent = `"${t.text}"`;
-      testimonialAuthor.textContent = t.author;
-      Array.from(testimonialDots.children).forEach((d,i)=>d.classList.toggle('active', i===tIndex));
-    }
-    function advanceTestimonial(){ tIndex = (tIndex+1)%testimonials.length; showTestimonial(); }
-
-    /*********************
-     * Auto play doctors highlight (simple)
-     *********************/
-    let dIndex = 0;
-    function advanceDoctorHighlight(){
-      const cards = Array.from(document.querySelectorAll('.doctor-card'));
-      cards.forEach((c,i)=>c.style.transform = `translateY(${i===dIndex? '-6px':'0'})`);
-      const dots = Array.from(doctorDots.children);
-      dots.forEach((d,i)=>d.classList.toggle('active', i===dIndex));
-      dIndex = (dIndex+1)%doctors.length;
-    }
-
-    /*********************
-     * Init
-     *********************/
-    function init(){
-      renderDoctors();
-      renderNews();
-      renderTestimonialDots();
-      showTestimonial();
-      // auto cycles
-      setInterval(advanceTestimonial, 4500);
-      setInterval(advanceDoctorHighlight, 3000);
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-
-    // small helper for nav on mobile (simple)
-    (function(){
-      const navLinks = document.querySelector('.nav-links');
-      const burger = document.createElement('button');
-      burger.textContent='☰';
-      burger.style.background='transparent'; burger.style.border='none'; burger.style.color='white'; burger.style.fontSize='1.25rem';
-      burger.addEventListener('click',()=>{navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex'; navLinks.style.flexDirection='column'; navLinks.style.background='rgba(0,0,0,.05)'; navLinks.style.position='absolute'; navLinks.style.right='1rem'; navLinks.style.top='60px'; navLinks.style.padding='1rem'; navLinks.style.borderRadius='6px'});
-      document.querySelector('.navbar').insertBefore(burger, document.querySelector('.navbar').children[1]);
-    })();
-  </script>
+    
+    <script>
+        
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.body.classList.toggle('mobile-menu-open');
+        });
+        
+        // Hide menu on resize if above mobile breakpoint (optional cleanup)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                document.body.classList.remove('mobile-menu-open');
+            }
+        });
+    </script>
 </body>
 </html>
